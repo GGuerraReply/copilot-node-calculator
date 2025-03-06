@@ -33,6 +33,12 @@ function calculate(operand1, operand2, operation) {
         case '/':
             uri += "?operation=divide";
             break;
+        case '^':
+            uri += "?operation=power";
+            break;
+        case '√':
+            uri += "?operation=root";
+            break;
         default:
             setError();
             return;
@@ -142,6 +148,16 @@ document.addEventListener('keypress', (event) => {
         operationPressed(event.key);
     } else if (event.key == '=') {
         equalPressed();
+    } else if (event.key == 'Enter') {
+        equalPressed();
+    } else if (event.key.match(/^[cC]$/)) {
+        clearPressed();
+    } else if (event.key.match(/^[sS]$/)) {
+        signPressed();
+    } else if (event.key == '^') {
+        operationPressed('^');
+    } else {
+        console.log("Unhandled key: " + event.key);
     }
 });
 
