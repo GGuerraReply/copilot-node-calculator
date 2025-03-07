@@ -39,6 +39,10 @@ function calculate(operand1, operand2, operation) {
         case '√':
             uri += "?operation=root";
             break;
+        case 'abs':
+            uri += "?operation=abs";
+            break;
+        
         default:
             setError();
             return;
@@ -119,7 +123,12 @@ function signPressed() {
 function operationPressed(op) {
     operand1 = getValue();
     operation = op;
-    state = states.operator;
+    if (operation === 'abs') {
+        calculate(operand1, 0, operation);
+        state = states.complete;
+    } else {
+        state = states.operator;
+    }
 }
 
 function equalPressed() {
@@ -156,6 +165,8 @@ document.addEventListener('keypress', (event) => {
         signPressed();
     } else if (event.key == '^') {
         operationPressed('^');
+    } else if (event.key == 'a' || event.key == 'A') {
+        operationPressed('abs');
     } else {
         console.log("Unhandled key: " + event.key);
     }

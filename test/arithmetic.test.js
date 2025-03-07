@@ -144,6 +144,22 @@ describe('Arithmetic', function () {
                     done();
                 });
         });
+        it('subtracts a floating point number from an integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=5&operand2=2.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.5 });
+                    done();
+                });
+        });
+        it('subtracts supporting exponential notation', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=4.2e1&operand2=1e0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 41 });
+                    done();
+                });
+        });
     });
 
     describe('Power/Exponential', function () {
@@ -254,6 +270,22 @@ describe('Arithmetic', function () {
                     done();
                 });
         });
+        it('multiplies a floating point number by an integer', function (done) {
+            request.get('/arithmetic?operation=multiply&operand1=2.5&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 5 });
+                    done();
+                });
+        });
+        it('multiplies a floating point number by a floating point number', function (done) {
+            request.get('/arithmetic?operation=multiply&operand1=2.5&operand2=2.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 6.25 });
+                    done();
+                });
+        });
     });
 
     describe('Division', function () {
@@ -313,6 +345,38 @@ describe('Arithmetic', function () {
                     done();
                 });
         });
+        it('divides a positive integer by a floating point number', function (done) {
+            request.get('/arithmetic?operation=divide&operand1=42&operand2=2.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 16.8 });
+                    done();
+                });
+        });
+        it('divides a floating point number by an integer', function (done) {
+            request.get('/arithmetic?operation=divide&operand1=5.5&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.75 });
+                    done();
+                });
+        });
+        it('divides a floating point number by a floating point number', function (done) {
+            request.get('/arithmetic?operation=divide&operand1=5.5&operand2=2.2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.5 });
+                    done();
+                });
+        });
+        it('divides supporting exponential notation', function (done) {
+            request.get('/arithmetic?operation=divide&operand1=4.2e1&operand2=2e1')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.1 });
+                    done();
+                });
+        });
     });
 
     describe('Root', function () {
@@ -361,6 +425,65 @@ describe('Arithmetic', function () {
                 .expect(200)
                 .end(function (err, res) {
                     expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('calculates the root of a floating point number with an integer root', function (done) {
+            request.get('/arithmetic?operation=root&operand1=2.25&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1.5 });
+                    done();
+                });
+        });
+        it('calculates the root of a floating point number with a floating point root', function (done) {
+            request.get('/arithmetic?operation=root&operand1=2.25&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 5.0625 });
+                    done();
+                });
+        });
+    });
+
+    describe('Absolute Value', function () {
+        it('calculates the absolute value of a positive integer', function (done) {
+            request.get('/arithmetic?operation=abs&operand1=42')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 42 });
+                    done();
+                });
+        });
+        it('calculates the absolute value of a negative integer', function (done) {
+            request.get('/arithmetic?operation=abs&operand1=-42')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 42 });
+                    done();
+                });
+        });
+        it('calculates the absolute value of zero', function (done) {
+            request.get('/arithmetic?operation=abs&operand1=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('calculates the absolute value of a positive floating point number', function (done) {
+            request.get('/arithmetic?operation=abs&operand1=3.14')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 3.14 });
+                    done();
+                });
+        });
+        it('calculates the absolute value of a negative floating point number', function (done) {
+            request.get('/arithmetic?operation=abs&operand1=-3.14')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 3.14 });
                     done();
                 });
         });

@@ -10,7 +10,6 @@ exports.calculate = function(req, res) {
     res.json({ error: err.message });
   });
 
-  // TODO: Add operator
   var operations = {
     'add':      function(a, b) { return Number(a) + Number(b) },
     'subtract': function(a, b) { return a - b },
@@ -23,7 +22,8 @@ exports.calculate = function(req, res) {
       } else {
         return Math.pow(a, 1 / b);
       }
-    }
+    },
+    'abs':      function(a) { return Math.abs(a) }
   };
 
   if (!req.query.operation) {
@@ -42,9 +42,10 @@ exports.calculate = function(req, res) {
     throw new Error("Invalid operand1: " + req.query.operand1);
   }
 
-  if (!req.query.operand2 ||
+  if (req.query.operation !== 'abs' && 
+      (!req.query.operand2 ||
       !req.query.operand2.match(/^(-)?[0-9\.]+(e(-)?[0-9]+)?$/) ||
-      req.query.operand2.replace(/[-0-9e]/g, '').length > 1) {
+      req.query.operand2.replace(/[-0-9e]/g, '').length > 1)) {
     throw new Error("Invalid operand2: " + req.query.operand2);
   }
 
